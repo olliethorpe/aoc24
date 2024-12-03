@@ -1,4 +1,5 @@
 from collections import Counter
+from utils import cache_and_read_input
 
 
 def question_one(data):
@@ -15,13 +16,12 @@ def question_two(first_list, second_list):
     for number, first_lst_cnt in Counter(first_list).items():
         if sec_list_cnt := second_list_counter.get(number):
             similarity_score += number * sec_list_cnt * first_lst_cnt
-
+    print(f'The answer to question two is: {similarity_score}')
     return similarity_score
 
 
 if __name__ == '__main__':
-    with open(r'data\day1.txt') as f:
-        data = f.readlines()
+    data = cache_and_read_input(1)
 
     first_list, second_list = question_one(data)  # 1722302
 

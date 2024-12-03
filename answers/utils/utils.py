@@ -32,7 +32,7 @@ def cache_and_read_input(day) -> list[str]:
         write_input_to_file(day, out_file_path)
 
     with open(out_file_path, "r") as f:
-        read_input = f.read()
+        read_input = f.readlines()
 
     return read_input
 
