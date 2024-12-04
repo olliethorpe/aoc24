@@ -1,76 +1,39 @@
 from utils import cache_and_read_input
 
 
-def is_report_safe(report, report_id):
-    dampened = False
-    increasing = None
+def is_safe_1(ls):
+    ds = [ls[i + 1] - ls[i] for i in range(len(ls) - 1)]
 
-    current_index = 1
-    previous_index = 0
-    report_length = len(report)
-    cnt = 1
-    while True:
-        if current_index >= report_length:
+    if not all(-3 <= d <= 3 and d != 0 for d in ds):
+        return False
+
+    if all(d > 0 for d in ds) or all(d < 0 for d in ds):
+        return True
+
+    return False
+
+
+def is_safe_2(ls):
+    if is_safe_1(ls):
+        return True
+    for i in range(len(ls)):
+        modded = ls[:i] + ls[i + 1:]
+        if is_safe_1(modded):
             return True
-
-        diff = report[current_index] - report[previous_index]
-
-        # Check for invalid differences
-        if abs(diff) > 3 or diff == 0:
-            if dampened:
-                print(f"Report {report_id} unsafe: Invalid step between {report[previous_index]} and {report[current_index]}")
-                return False
-            print(f"Dampening report {report_id} due to invalid step between {report[previous_index]} and {report[current_index]}")
-            dampened = True
-            current_index += 1
-            continue
-
-        # Determine direction
-        current_increasing = diff > 0
-
-        # Initialize direction if not set
-        if increasing is None:
-            increasing = current_increasing
-
-        # Check for direction inconsistency
-        if current_increasing != increasing:
-            if dampened:
-                print(f"Report {report_id} unsafe: Direction change between {report[previous_index]} and {report[current_index]}")
-                return False
-            print(f"Dampening report {report_id} due to direction change between {report[previous_index]} and {report[current_index]}")
-            dampened = True
-            # Reset direction since dampening occurred
-            increasing = None
-            current_index += 1
-            continue
-
-        if dampened and cnt:
-            cnt -= 1
-            previous_index += 1
-
-        previous_index += 1
-        current_index += 1
+    return False
 
 
 def question_two(data):
 
     safe_count = 0
-
-    for report_id, line in enumerate(data, start=1):
-        report = list(map(int, line.split()))
-        forwards = is_report_safe(report, report_id)
-        backwards = is_report_safe(list(reversed(report)), report_id)
-        if forwards or backwards:
-            print(f"Report {report_id} deemed safe")
+    for line in data:
+        nums = list(map(int, line.split()))
+        if is_safe_2(nums):
             safe_count += 1
-        else:
-            print(f"Report {report_id} deemed unsafe")
-
     return safe_count
-
 
 
 if __name__ == "__main__":
     data = cache_and_read_input(2)
-    a = question_two(data)
-    print(a)
+    b = question_two(data)
+    print(b)
