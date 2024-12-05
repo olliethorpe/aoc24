@@ -35,17 +35,20 @@ def question_one(data):
 
 def question_two(data):
     count = 0
-    pattern = [(-1, -1), (-1, 1), (1, 1), (1, -1)]
+    pattern = [(-1, -1), (1, 1), (-1, 1), (1, -1)]
     for y_pos in range(1, len(data) - 1):
         line = data[y_pos]
         for x_pos in range(1, len(line) - 1):
             if line[x_pos] == 'A':
-                letters = []
+                word = 'MS'
+                sub_c = 0
                 for dx, dy in pattern:
-                    new_x = x_pos + dx
-                    new_y = y_pos + dy
-                    letters.append(data[new_y][new_x])
-                if sorted(letters) == ['M', 'M', 'S', 'S']:
+                    new_letter = data[y_pos + dy][x_pos + dx]
+                    word = word.replace(new_letter, '')
+                    if not word:
+                        sub_c += 1
+                        word = 'MS'
+                if sub_c == 2:
                     count += 1
     return count
 
