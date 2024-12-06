@@ -8,6 +8,7 @@ def question_one(data):
     visited_positions = 0
     while True:
         guard_pos = (guard_pos[0] + direction[0], guard_pos[1] + direction[1])
+        print(F'NEXT POS {guard_pos}')
         try:
             next_object = data[guard_pos[1]][guard_pos[0]]
             visited_positions += 1
@@ -16,6 +17,8 @@ def question_one(data):
             return visited_positions
 
         if next_object == '#':
+            guard_pos = (guard_pos[0] - direction[0], guard_pos[1] - direction[1])
+            visited_positions -= 1
             direction = next_dir[direction]
 
 
