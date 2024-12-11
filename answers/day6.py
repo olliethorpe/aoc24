@@ -68,6 +68,7 @@ def question_two(data):
                 total_loops += 1
             line[x] = before
             data[y] = ''.join(line)
+
     return total_loops
 
 
