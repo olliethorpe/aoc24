@@ -27,7 +27,8 @@ def question_two(data):
     sum_of_correct_tests = 0
     pattern = re.compile(r'(\d+):([\d\s]+)')
     operators = ['*', '+', '||']
-    for row in data:
+    for i, row in enumerate(data):
+        print(f'Testing row {i}')
         match = re.match(pattern, row)
         result = int(match[1])
         numbers = match[2].split()
@@ -35,7 +36,12 @@ def question_two(data):
         for comb in combs:
             total = int(numbers[0])
             for num, op in zip(numbers[1:], comb):
-                total = eval(f"{total} {op} {num}")
+                if total > result:
+                    break
+                if op == '||':
+                    total = int(f'{total}{num}')
+                else:
+                    total = eval(f"{total} {op} {num}")
             if total == result:
                 sum_of_correct_tests += result
                 break
